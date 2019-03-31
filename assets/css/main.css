@@ -215,6 +215,14 @@ input, select, textarea {
 		font-size: 1.1em;
 	}
 
+	article h2 {
+		text-shadow: 2px 2px #333333;
+	}
+
+	article .content p {
+		text-shadow: 1px 1px #333333;
+	}
+
 	h3 {
 		font-size: 1em;
 	}
