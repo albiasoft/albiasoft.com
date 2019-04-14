@@ -58,9 +58,20 @@
 					<div id="main">
 						<div class="inner">
 							<h1>Developing a Self-Organizing Map (Part 1)</h1>
-							<span class="image main"><img src="images/som-part1-header.jpg" alt="" /></span>
-							<p>One of the first artificial neural networks I learned during my university stage was the Kohonen neural network, mainly known as SOM (Self-Organizing Map). This neural network was created by the scientist Teuvo Kohonen in the middle 80's. This is a quite simple and easy to learn neural network from a mathematical point of view, so this is grateful for those engineers with a weak background in mathematics.</p><p>SOM networks allow us to create data classification maps given a dataset without the needing of knowing the existent myriad of classes among the data. A classification map is a tensor (a bidimensional matrix for simplicity) as a result of training the net with high amounts of data taken from the training dataset. With a trained classification map we are able to group input data. This is especially useful in those cases where we have to deal with a bunch of unknown data that must be classified or tagged in some way. SOM nets have a quite good performance, even with the most simple implementations. Despite that, there is a wide myriad of technics that provide better performance in the classification results.</p>
-<p>Once this presentation is done I want to focus on the algorithm behind this neural network from a practical point of view and providing some working code and examples.</p>
+							<span class="image main"><img src="images/som-part1/header.jpg" alt="" /></span>
+							<p>One of the first artificial neural networks I learned during my university stage was the Kohonen neural network, mainly known as SOM (Self-Organizing Map). This neural network was created by the scientist Teuvo Kohonen in the middle 80's. This is a quite simple and easy to learn neural network from a mathematical point of view, so this is grateful for those engineers with a weak background in mathematics.</p>
+
+<p>SOM nets are unsupervised neural networks, it means that those allow us to create a classification map given a dataset without the need of knowing the existent myriad of classes among the data. A classification map is a bidimensional matrix of N-dimensional vectors, as a result of training the net with huge amounts of data taken from the training dataset. With a trained classification map we are able to classify input data. This is especially useful in those cases where we have to deal with a bunch of unknown data that must be classified or tagged in some way. SOM nets have a quite good performance, even with the most simple implementations.</p>
+
+<p>The SOM net projects an N-dimensional dataset in a reduced dimension space. The projection is topological preserving, that is, the proximity among objects in the input space (N-dimensional) is approximately preserved in the output space (2-dimensional map). This process considerably reduces the dimensionality of the input data.</p>
+
+							<div class="box alt">
+								<div class="row gtr-uniform">
+									<div class="col-12" style="text-align:center;">
+										<span class="image"><img src="images/som-part1/kohonen-ndimension-projection.gif" alt=""></span>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 
