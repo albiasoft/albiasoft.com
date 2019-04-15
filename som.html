@@ -71,7 +71,31 @@
 										<span class="image"><img src="images/som-part1/kohonen-ndimension-projection.gif" alt=""></span>
 									</div>
 								</div>
-							</div>
+							</div/>
+
+<p>The first step of the SOM algorithm is the initialization of the map with random weight vector values. After the initialization the training loop begins. A sample vector is selected randomly from the dataset and the map of weight vectors is searched to find which weight best represents that sample. Each weight vector has neighboring weights that are close to it. The weight vector that is chosen is rewarded by being able to become more like that randomly selected sample vector. The rewared vector is known as the Best Matching Unit(BMU). The neighbors of that vector weight are also rewarded by being able to become more like the chosen sample vector. From this step the number of neighbors and how much each weight can learn decreases over time. From there this whole process is repeated thousands of times until all sample vectors are taken from the dataset and you consider the training process ends according to your criteria.</p>
+
+                                                        <div class="box alt">
+                                                                <div class="row gtr-uniform">
+                                                                        <div class="col-12" style="text-align:center;">
+                                                                                <span class="image"><img src="images/som-part1/kohonen-map-grid.gif" alt=""></span>
+                                                                        </div>
+                                                                </div>
+                                                        </div/>
+
+<p>The steps of the training process are described bellow.</p>
+
+<ol>
+	<li>Each weight vector of the map is initialized.</li>
+	<li>A sample vector is chosen at random from the dataset.</li>
+	<li>Every vector of the map is examined to calculate which vector weight is most like the input vector. The winning vector is commonly known as the Best Matching Unit (BMU).</li>
+	<li>Then the neighbourhood of the BMU is calculated. The amount of neighbors decreases over time.</li>
+	<li>The winning vector is rewarded with becoming more like the sample vector. The nighbors also become more like the sample vector. The closer a node is to the BMU, the more its weights get altered and the farther away the neighbor is from the BMU, the less it learns.</li>
+	<li>Repeat the step 2 for N iterations.</li>
+</ol>
+
+<p>Although this algorithm is quite simple, the most important thing is to clean and prepare the data prior to the training process to ensure good results. I briefly explained the steps of the SOM algorithm in a human language, but there are key parts that need to be explained in depth for a better understanding before start programming it. For example, how do we search the vector BMU given a sample vector? How is the neighboring BMU calculated? how do we visualize the classification map once it is trained? The second part of this post have the answers to this questions and the corresponding implementations in C language.</p>
+
 						</div>
 					</div>
 
