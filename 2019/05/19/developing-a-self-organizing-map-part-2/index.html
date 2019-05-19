@@ -61,13 +61,13 @@
 							<span class="image main"><img src="../../../../images/som-part2/header.jpg" alt="" /></span>
 							<p><em>Note: If you are new to this series I strongly recommend you read the <a href="../../../../2019/04/16/developing-a-self-organizing-map-part-1/index.html">previous article</a> to understand the basic concepts.</em></p>
 
-<p>The best way to better understand the <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FSelf-organizing_map"><b>SOM algorithm</b></a> is to reproduce step by step a single iteration with a practical example. Color classification is the <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2F%2522Hello%2C_World!%2522_program"><b>"Hello world!"</b></a> equivalent for learning the SOM algorithm. By training color vectors we can graphically visualize how the map evolves during the training, so the different calculated <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCluster_analysis"><b>clusters</b></a> are painted in the map.</p>
+<p>The best way to better understand the <a href="https://en.wikipedia.org/wiki/Self-organizing_map"><b>SOM algorithm</b></a> is to reproduce step by step a single iteration with a practical example. Color classification is the <a href="https://en.wikipedia.org/wiki/%22Hello,_World!%22_program"><b>"Hello world!"</b></a> equivalent for learning the SOM algorithm. By training color vectors we can graphically visualize how the map evolves during the training, so the different calculated <a href="https://en.wikipedia.org/wiki/Cluster_analysis"><b>clusters</b></a> are painted in the map.</p>
 
 <h2>Example 1: Classifying a small dataset of RGB colors</h2>
 
-<p>Colors can be represented using vectors of three components, also known as <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRGB_color_model"><b>RGB color model</b></a>. One component for each of the three base colors (red, green and blue). Draw a colored pixel on the screen given a RGB vector color is trivial in terms of development on a modern computer, and extremely fast using a low level development stack like <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOpenGL"><b>OpenGL</b></a> and <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FC_%28programming_language%29"><b>C</b></a> or <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FC%252B%252B"><b>C++</b></a> programming language.</p>
+<p>Colors can be represented using vectors of three components, also known as <a href="https://en.wikipedia.org/wiki/RGB_color_model"><b>RGB color model</b></a>. One component for each of the three base colors (red, green and blue). Draw a colored pixel on the screen given a RGB vector color is trivial in terms of development on a modern computer, and extremely fast using a low level development stack like <a href="https://en.wikipedia.org/wiki/OpenGL"><b>OpenGL</b></a> and <a href="https://en.wikipedia.org/wiki/C_(programming_language)"><b>C</b></a> or <a href="https://en.wikipedia.org/wiki/C%2B%2B"><b>C++</b></a> programming language.</p>
 
-<p>At least three bytes of memory are needed to store a <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRGB_color_space"><b>RGB</b></a> vector, one byte per component. One byte represents an unsigned integer value from 0 to 255, so an RGB vector specifies a relative intensity of red, green and blue. Implement a color classification is a good starting point because the limitation of the space of values and above all for its simplicity.</p>
+<p>At least three bytes of memory are needed to store a <a href="https://en.wikipedia.org/wiki/RGB_color_space"><b>RGB</b></a> vector, one byte per component. One byte represents an unsigned integer value from 0 to 255, so an RGB vector specifies a relative intensity of red, green and blue. Implement a color classification is a good starting point because the limitation of the space of values and above all for its simplicity.</p>
 
 <p>The following RGB vector dataset will be used to train the implementation.</p>
 
@@ -127,7 +127,7 @@
 
 <h2>3 Search the Best Matching Unit (BMU)</h2>
 
-<p>The SOM algorithm utilizes competitive learning. After a sample vector from the dataset is picked, its <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FEuclidean_distance"><b>Euclidean distance</b></a> to all weight vectors is computed. The neuron whose weight vector is most similar to the sample is the <b>Best Matching Unit(BMU)</b>.</p>
+<p>The SOM algorithm utilizes competitive learning. After a sample vector from the dataset is picked, its <a href="https://en.wikipedia.org/wiki/Euclidean_distance"><b>Euclidean distance</b></a> to all weight vectors is computed. The neuron whose weight vector is most similar to the sample is the <b>Best Matching Unit(BMU)</b>.</p>
 
 <script src="https://gist.github.com/4672e038fe3e0122865aa9f67c3b2244.js"> </script>
 
@@ -177,7 +177,7 @@
 
 <h2>Example 2: Classifying the RGB color space</h2>
 
-<p>So far, we have classified a small set of 27 RGB vector colors. Now we are going to classify a large amount of random RGB colors, in other words, the whole <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRGB_color_space"><b>RGB color space</b></a>. Making a small change in the initialization of the dataset should be enough.</p>
+<p>So far, we have classified a small set of 27 RGB vector colors. Now we are going to classify a large amount of random RGB colors, in other words, the whole <a href="https://en.wikipedia.org/wiki/RGB_color_space"><b>RGB color space</b></a>. Making a small change in the initialization of the dataset should be enough.</p>
 
 <script src="https://gist.github.com/366db567eef1aac14199dbd1a283af5f.js"> </script>
 
@@ -204,7 +204,7 @@
 
 <h2>Conclusion</h2>
 
-<p>SOM is a simple and powerful machine learning algorithm for <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCluster_analysis"><b>data clustering</b></a>. Large SOMs display <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FEmergent_property"><b>emergent properties</b></a>. In maps consisting of thousands of nodes, it is possible to perform cluster operations on the map itself. Use it wisely.</p>
+<p>SOM is a simple and powerful machine learning algorithm for <a href="https://en.wikipedia.org/wiki/Cluster_analysis"><b>data clustering</b></a>. Large SOMs display <a href="https://en.wikipedia.org/wiki/Emergent_property"><b>emergent properties</b></a>. In maps consisting of thousands of nodes, it is possible to perform cluster operations on the map itself. Use it wisely.</p>
 
 <h2>Download the source code from GitHub</h2>
 
