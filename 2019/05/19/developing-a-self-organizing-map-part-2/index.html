@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html>
+        <head>
+                <title>Developing a Self-Organizing Map (Part 2)</title>
+                <meta charset="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+                <link rel="stylesheet" href="../../../../assets/css/main.css" />
+                <noscript><link rel="stylesheet" href="../../../../assets/css/noscript.css" /></noscript>
+                <link rel="apple-touch-icon" sizes="57x57" href="../../../../assets/favicon/apple-icon-57x57.png">
+                <link rel="apple-touch-icon" sizes="60x60" href="../../../../assets/favicon/apple-icon-60x60.png">
+                <link rel="apple-touch-icon" sizes="72x72" href="../../../../assets/favicon/apple-icon-72x72.png">
+                <link rel="apple-touch-icon" sizes="76x76" href="../../../../assets/favicon/apple-icon-76x76.png">
+                <link rel="apple-touch-icon" sizes="114x114" href="../../../../assets/favicon/apple-icon-114x114.png">
+                <link rel="apple-touch-icon" sizes="120x120" href="../../../../assets/favicon/apple-icon-120x120.png">
+                <link rel="apple-touch-icon" sizes="144x144" href="../../../../assets/favicon/apple-icon-144x144.png">
+                <link rel="apple-touch-icon" sizes="152x152" href="../../../../assets/favicon/apple-icon-152x152.png">
+                <link rel="apple-touch-icon" sizes="180x180" href="../../../../assets/favicon/apple-icon-180x180.png">
+                <link rel="icon" type="image/png" sizes="192x192"  href="../../../../assets/favicon/android-icon-192x192.png">
+                <link rel="icon" type="image/png" sizes="32x32" href="../../../../assets/favicon/favicon-32x32.png">
+                <link rel="icon" type="image/png" sizes="96x96" href="../../../../assets/favicon/favicon-96x96.png">
+                <link rel="icon" type="image/png" sizes="16x16" href="../../../../assets/favicon/favicon-16x16.png">
+                <link rel="manifest" href="../../../../assets/favicon/manifest.json">
+                <meta name="msapplication-TileColor" content="#ffffff">
+                <meta name="msapplication-TileImage" content="../../../../assets/favicon/ms-icon-144x144.png">
+        </head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+                                                        <!-- Logo -->
+                                                                <a href="../../../../" class="logo">
+                                                                        <span class="symbol"><img src="../../../../images/albiasoft_logo.png" alt="" /></span><span class="title">Albia<span class="green">Soft</span></span>
+                                                                </a>
+
+                                                        <!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="../../../../">Home</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Developing a Self-Organizing Map (Part 2)</h1>
+							<span class="image main"><img src="../../../../images/som-part2/header.jpg" alt="" /></span>
+							<p><em>Note: If you are new to this series I strongly recommend you read the <a href="../../../../2019/04/16/developing-a-self-organizing-map-part-1/index.html">previous article</a> to understand the basic concepts.</em></p>
+
+<p>The best way to better understand the <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FSelf-organizing_map"><b>SOM algorithm</b></a> is to reproduce step by step a single iteration with a practical example. Color classification is the <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2F%2522Hello%2C_World!%2522_program"><b>"Hello world!"</b></a> equivalent for learning the SOM algorithm. By training color vectors we can graphically visualize how the map evolves during the training, so the different calculated <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCluster_analysis"><b>clusters</b></a> are painted in the map.</p>
+
+<h2>Example 1: Classifying a small dataset of RGB colors</h2>
+
+<p>Colors can be represented using vectors of three components, also known as <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRGB_color_model"><b>RGB color model</b></a>. One component for each of the three base colors (red, green and blue). Draw a colored pixel on the screen given a RGB vector color is trivial in terms of development on a modern computer, and extremely fast using a low level development stack like <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FOpenGL"><b>OpenGL</b></a> and <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FC_%28programming_language%29"><b>C</b></a> or <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FC%252B%252B"><b>C++</b></a> programming language.</p>
+
+<p>At least three bytes of memory are needed to store a <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRGB_color_space"><b>RGB</b></a> vector, one byte per component. One byte represents an unsigned integer value from 0 to 255, so an RGB vector specifies a relative intensity of red, green and blue. Implement a color classification is a good starting point because the limitation of the space of values and above all for its simplicity.</p>
+
+<p>The following RGB vector dataset will be used to train the implementation.</p>
+
+                                                        <div class="box alt" style="margin: 60px 0px 60px 0;">
+                                                                <div class="row gtr-uniform">
+                                                                        <div class="col-12" style="text-align:center;">
+                                                                                <span class="image"><img style="width: calc(100% - 90px);" src="../../../../images/som-part2/kohonen-27-rgb-dataset.png" alt=""></span>
+                                                                        </div>
+                                                                </div>
+                                                        </div/>
+
+<p>As you can see, the data in this dataset can be easily labeled in three different classes due to the high proximity of its samples to the base colors (red, green and blue). So we expect that the SOM algorithm, after training, will be able to determine if a given color is more similar to red, green or blue.</p>
+
+                                                        <div class="box alt" style="margin: 60px 0px 60px 0;">
+                                                                <div class="row gtr-uniform">
+                                                                        <div class="col-12" style="text-align:center;">
+                                                                                <span class="image"><img style="width: calc(100% - 90px);" src="../../../../images/som-part2/kohonen-2d-projection.png" alt=""></span>
+										<br/><span style="font-size: 0.8em;">Expected 2D projection SOM map with color clusters</span>
+                                                                        </div>
+                                                                </div>
+                                                        </div/>
+
+<p>Before start introducing any programming code let me refresh the memory and rewrite again the steps involved in the SOM algorithm as described in the previous article <a href="../../../../2019/04/16/developing-a-self-organizing-map-part-1/index.html"><b>Developing a Self-Organizing Map (Part 1)</b></a>. Once said, the steps of the training process are listed below.</p>
+
+<ol>
+	<li>Each weight vector of the map is initialized.</li>
+	<li>A sample vector is chosen at random from the dataset.</li>
+	<li>Every vector of the map is examined to calculate which vector weight is most like the input vector. The winning vector is commonly known as the Best Matching Unit (BMU).</li>
+	<li>Then the neighbourhood of the BMU is calculated. The amount of neighbors decreases over time.</li>
+	<li>The winning vector is rewarded with becoming more like the sample vector. The nighbors also become more like the sample vector. The closer a node is to the BMU, the more its weights get altered and the farther away the neighbor is from the BMU, the less it learns.</li>
+	<li>Repeat the step 2 for N iterations.</li>
+</ol>
+
+<p>As the programming language I choose to develop the SOM algorithm is C, data models can be defined by using struct statements. The core entities that need to be modeled are <b>neurons</b>, data <b>samples</b> and <b>coordinates</b>. Secondary structures are also defined and used.</p>
+
+<script src="https://gist.github.com/3540e9ff72023ad4f4c21d92d70941f7.js"> </script>
+
+<p>A <b>Neuron</b> is the structure used for saving a weight vector inside the classification map, as well as a <b>Sample</b> is the structure used for saving a color vector in the dataset. Now take a look at the main function.</p>
+
+<script src="https://gist.github.com/018ea8b0fa2b6dc95463697e9e5dbaa4.js"> </script>
+
+<p>First things first. The main goal of the SOM algorithm is to calculate a classification map (2D projection map) given  a dataset, so two major memory structures need to be allocated. The map variable is a two-dimensional array of Neurons (weight vectors), its dimensions are defined by <b>MAP_WIDTH</b> and <b>MAP_HEIGHT</b>. The <b>samples</b> variable is a simple array of <b>Samples</b> (input vectors dataset). Since we are working with RGB vector colors the number of components must be 3 as defined by <b>TOTAL_COMPONENTS</b>.</p>
+
+<script src="https://gist.github.com/8ebc877933b3ebb54204811a41fae61d.js"> </script>
+
+<h2>1 Initialize weight vectors</h2>
+
+<p>A weight vector is a neuron in the map. All neurons should be initialized with random values according to the space of values of the dataset. A random value from 0 to 255 is assigned to each component for each neuron in the map.</p>
+
+<script src="https://gist.github.com/faa5b13c89cad821b8df5d932443fdc1.js"> </script>
+
+<h2>2 Pick a random sample vector from the dataset</h2>
+
+<p>To avoid tendentious trainings and reach better results pick the next proper sample vector from the dataset is key, although just pick a random sample may be enough for non-professional purposes. I suggest two tips to achieve the best results: Shuffle the dataset at the beginning of every epoch. Only pick the same sample again once the other samples are also being picked before.</p>
+
+<script src="https://gist.github.com/eeb04037a8d334882e16e9413cfc8046.js"> </script>
+
+<h2>3 Search the Best Matching Unit (BMU)</h2>
+
+<p>The SOM algorithm utilizes competitive learning. After a sample vector from the dataset is picked, its <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FEuclidean_distance"><b>Euclidean distance</b></a> to all weight vectors is computed. The neuron whose weight vector is most similar to the sample is the <b>Best Matching Unit(BMU)</b>.</p>
+
+<script src="https://gist.github.com/4672e038fe3e0122865aa9f67c3b2244.js"> </script>
+
+<h2>4-5 Scale the neighborhood of the BMU</h2>
+
+<p>Once found the neuron whose weight vector produces the smallest distance (this neuron is the BMU) the next step is to update all the neurons in the neighborhood of the BMU (including the BMU itself) by pulling them closer to the input vector.</p>
+
+<p>Usually the neighborhood are all those neurons around the BMU inside a limited circular area. The amount of neighbors decreases over time reducing the radius on each epoch of the algorithm.</p>
+
+                                                        <div class="box alt" style="margin: 60px 0px 60px 0;">
+                                                                <div class="row gtr-uniform">
+                                                                        <div class="col-12" style="text-align:center;">
+                                                                                <span class="image"><img style="max-width: 600px;" src="../../../../images/som-part2/kohonen-bmu.png" alt=""></span>
+                                                                        </div>
+                                                                </div>
+                                                        </div/>
+<p>The <b>neighborhood function</b> or kernel is an iteration-dependent <b>shrinking</b> function. It also depends on the distance of each neighbor neuron <b><em>i</em></b> from the BMU neuron <b><em>c</em></b>. The influence that the input sample has in the SOM is determined in the equation below. It defines a bell-shaped influence region.</p>
+
+                                                        <div class="box alt" style="margin: 50px 0px 50px 0;">
+                                                                <div class="row gtr-uniform">
+                                                                        <div class="col-12" style="text-align:center;">
+                                                                                <span class="image"><img style="width: 100%;" src="../../../../images/som-part2/som-equation.png" alt=""></span>
+                                                                        </div>
+                                                                </div>
+                                                        </div/>
+
+<p>In other words. The neurons closer to he BMU are strongly scaled (the more its weights get altered) to become more similar to the sample vector and farther away neurons are slightly scaled, the less it learns.</p>
+
+<p>The intensity of the scaling function is regulated by the learning rule. Its value also decreases over time reducing the ability to learn on each epoch of the algorithm.</p>
+
+<script src="https://gist.github.com/2e6d4e8ee16eb361fe7e6ec96f00e790.js"> </script>
+
+<h2>6 Repeat the step 2 for N iterations</h2>
+
+<p>The algorithm has different stages called epochs. Every epoch consists of N iterations of the previous described steps with a radius and learning rule. At the end of every epoch the radius and the learning rule are decreased, so the algorithm start performing an aggressive classification in the first epochs and ends with a light and more granular classification.</p>
+
+                                                        <div class="box alt" style="margin: 60px 0px 60px 0;">
+                                                                <div class="row gtr-uniform">
+                                                                        <div class="col-12" style="text-align:center;">
+                                                                                <span class="image"><img style="width: 100%;" src="../../../../images/som-part2/training-27-rgb-dataset.gif" alt=""></span>
+										<br/><span style="font-size: 0.8em;">Accelerated evolution of the SOM map training a small set of primary vector colors.</span>
+                                                                        </div>
+                                                                </div>
+                                                        </div/>
+
+<p>It should be noted that any kind of object which can be represented digitally using vectors, which has an appropriate distance measure associated with it, and in which the necessary operations for training are possible can be used to construct a self-organizing map.</p>
+
+<h2>Example 2: Classifying the RGB color space</h2>
+
+<p>So far, we have classified a small set of 27 RGB vector colors. Now we are going to classify a large amount of random RGB colors, in other words, the whole <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FRGB_color_space"><b>RGB color space</b></a>. Making a small change in the initialization of the dataset should be enough.</p>
+
+<script src="https://gist.github.com/366db567eef1aac14199dbd1a283af5f.js"> </script>
+
+
+                                                        <div class="box alt" style="margin: 60px 0px 60px 0;">
+                                                                <div class="row gtr-uniform">
+                                                                        <div class="col-12" style="text-align:center;">
+                                                                                <span class="image"><img style="max-width: calc(100% - 80px);" src="../../../../images/som-part2/kohonen-rgb-color-space-2d-projection.png" alt=""></span>
+										<br/><span style="font-size: 0.8em;">Trained self-organizing map projecting the RGB color space.</span>
+                                                                        </div>
+                                                                </div>
+                                                        </div/>
+
+<p>As you can see, it's really hard to find any kind of pattern in the RGB color space dataset. The SOM algorithm just clustered variants of similar colors. For example, cyan is a color formed by mixing the colors green and blue. The cyan area is placed between green and blue. Same case with magenta that is placed between red and blue areas. Or brown that is placed between red and green areas.</p>
+
+                                                        <div class="box alt" style="margin: 60px 0px 60px 0;">
+                                                                <div class="row gtr-uniform">
+                                                                        <div class="col-12" style="text-align:center;">
+                                                                                <span class="image"><img style="width: 100%;" src="../../../../images/som-part2/training-rgb-color-space-dataset.gif" alt=""></span>
+										<br/><span style="font-size: 0.8em;">Accelerated evolution of the SOM map training random RGB vector colors.</span>
+                                                                        </div>
+                                                                </div>
+                                                        </div/>
+
+<h2>Conclusion</h2>
+
+<p>SOM is a simple and powerful machine learning algorithm for <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FCluster_analysis"><b>data clustering</b></a>. Large SOMs display <a href="https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FEmergent_property"><b>emergent properties</b></a>. In maps consisting of thousands of nodes, it is possible to perform cluster operations on the map itself. Use it wisely.</p>
+
+<h2>Download the source code from GitHub</h2>
+
+<a href="https://github.com/albertnadal/Kohonen">https://github.com/albertnadal/Kohonen</a>
+
+
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/albertnadal/" class="icon style2 fa-linkedin"><span class="label">Linkedin</span></a></li>
+									<li><a href="https://github.com/albertnadal" class="icon style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="mailto:anadalg@gmail.com" class="icon style2 fa-envelope-o"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Albert Nadal Garriga. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="../../../../assets/js/jquery.min.js"></script>
+			<script src="../../../../assets/js/browser.min.js"></script>
+			<script src="../../../../assets/js/breakpoints.min.js"></script>
+			<script src="../../../../assets/js/util.js"></script>
+			<script src="../../../../assets/js/main.js"></script>
+
+	</body>
+</html>
